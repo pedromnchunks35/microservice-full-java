@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: quarkus-app
+  template:
+    metadata:
+      labels:
+        deployment: quarkus-app
+        service: quarkus
+    spec:
+      containers:
+        - name: postgres-container
+          image: postgres:latest
+          volumeMounts:
+            - name: postgres-volume
+              mountPath: "/var/lib/postgresql/data"
+          env:
+            - name: POSTGRES_USER
+              value: "admin"
+            - name: POSTGRES_PASSWORD
+              value: "12341234"
+            - name: POSTGRES_DB
+              value: "micro"
+      volumes:
+        - name: postgres-volume
+          hostPath:
+            path: /mnt/c/Users/psousaesilva/Documents/microservices-project-java/quarkus-rest-micro/db
