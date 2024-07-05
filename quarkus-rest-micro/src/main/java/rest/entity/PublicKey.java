@@ -1,13 +1,16 @@
 package rest.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.Generated;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -24,6 +27,8 @@ public class PublicKey extends PanacheEntityBase {
     private Date changedAt;
     @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private byte[] createdBy;
+    @OneToMany(mappedBy = "publicKey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ticket> tickets;
 
     public PublicKey() {
     }
@@ -64,12 +69,30 @@ public class PublicKey extends PanacheEntityBase {
         this.createdBy = builder.createdBy;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     public static class PublicKeyBuilder {
         private Long id;
         private Date changedAt;
         private byte[] createdBy;
+        private List<Ticket> tickets;
 
         public PublicKeyBuilder() {
+        }
+
+        public List<Ticket> getTickets() {
+            return tickets;
+        }
+
+        public PublicKeyBuilder setTickets(List<Ticket> tickets) {
+            this.tickets = tickets;
+            return this;
         }
 
         public Long getId() {

@@ -1,5 +1,6 @@
 package rest.entity;
 
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.UuidGenerator;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -41,14 +42,17 @@ public class Ticket extends PanacheEntityBase {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    public static Ticket findById(UUID id) {
+        Ticket ticket = find("id", id).firstResult();
+        Hibernate.initialize(ticket.getUser());
+        Hibernate.initialize(ticket.getPublicKey());
+        return ticket;
+    }
+
     // ? To init with the current date
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();
-    }
-
-    public static Ticket findById(UUID id) {
-        return find("id", id).firstResult();
     }
 
     public PublicKey getPublicKey() {

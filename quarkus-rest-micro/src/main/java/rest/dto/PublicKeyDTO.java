@@ -1,11 +1,15 @@
 package rest.dto;
 
 import java.util.Date;
+import java.util.List;
+
+import rest.entity.Ticket;
 
 public class PublicKeyDTO {
     private Long id;
     private Date changedAt;
     private byte[] createdBy;
+    private List<Ticket> tickets;
 
     public PublicKeyDTO() {
     }
@@ -14,6 +18,16 @@ public class PublicKeyDTO {
         private Long id;
         private Date changedAt;
         private byte[] createdBy;
+        private List<Ticket> tickets;
+
+        public List<Ticket> getTicket() {
+            return tickets;
+        }
+
+        public PublicKeyDTOBuilder setTickets(List<Ticket> tickets) {
+            this.tickets = tickets;
+            return this;
+        }
 
         public Long getId() {
             return this.id;
@@ -45,6 +59,14 @@ public class PublicKeyDTO {
         public PublicKeyDTO build() {
             return new PublicKeyDTO(this);
         }
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     private PublicKeyDTO(PublicKeyDTOBuilder builder) {

@@ -15,6 +15,7 @@ public class PublicKeyMapperImpl {
                 .setId(publicKeyDTO.getId())
                 .setchangedAt(publicKeyDTO.getChangedAt())
                 .setcreatedBy(publicKeyDTO.getCreatedBy())
+                .setTickets(publicKeyDTO.getTickets())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class PublicKeyMapperImpl {
                 .setId(publicKey.getId())
                 .setChangedAt(publicKey.getchangedAt())
                 .setCreatedBy(publicKey.getcreatedBy())
+                .setTickets(publicKey.getTickets())
                 .build();
     }
 

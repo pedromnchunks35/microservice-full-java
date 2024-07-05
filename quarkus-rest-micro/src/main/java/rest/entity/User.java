@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_APP")
 public class User extends PanacheEntityBase {
     @Id
     @Generated
