@@ -3,7 +3,7 @@ package rest.dto;
 import java.util.List;
 
 public class UserDTO {
-    private Long id;
+    private String username;
     private String location;
     private String postalCode;
     private String phoneNumber;
@@ -21,12 +21,12 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public Long getId() {
-        return this.id;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getLocation() {
@@ -62,7 +62,7 @@ public class UserDTO {
     }
 
     private UserDTO(UserDTOBuilder builder) {
-        this.id = builder.id;
+        this.username = builder.username;
         this.location = builder.location;
         this.postalCode = builder.postalCode;
         this.phoneNumber = builder.phoneNumber;
@@ -71,16 +71,16 @@ public class UserDTO {
     }
 
     public static class UserDTOBuilder {
-        private Long id;
+        private String username;
         private String location;
         private String postalCode;
         private String phoneNumber;
         private String country;
         private List<TicketDTO> tickets;
 
-        public UserDTOBuilder setId(Long id) {
-            this.id = id;
-            return this;    
+        public UserDTOBuilder setUsername(String username) {
+            this.username = username;
+            return this;
         }
 
         public UserDTOBuilder setLocation(String location) {

@@ -3,6 +3,8 @@ package rest.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import rest.dto.TicketDTO;
 import rest.entity.Ticket;
 
@@ -57,5 +59,16 @@ public class TicketMapperImpl {
             newList.add(ticketToTicketDTO(ticketList.get(i)));
         }
         return newList;
+    }
+
+    public static JSONObject ticketDTOtoJsonObject(TicketDTO ticketDTO) {
+        JSONObject jsonForm = new JSONObject();
+        jsonForm.put("id", ticketDTO.getId());
+        jsonForm.put("day", ticketDTO.getDay());
+        jsonForm.put("hour", ticketDTO.getHour());
+        jsonForm.put("month", ticketDTO.getMonth());
+        jsonForm.put("year", ticketDTO.getYear());
+        jsonForm.put("username", ticketDTO.getUser().getUsername());
+        return jsonForm;
     }
 }

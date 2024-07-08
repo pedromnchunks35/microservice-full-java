@@ -2,8 +2,6 @@ package rest.entity;
 
 import java.util.List;
 
-import org.hibernate.annotations.Generated;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,9 +14,8 @@ import jakarta.persistence.Table;
 @Table(name = "USER_APP")
 public class User extends PanacheEntityBase {
     @Id
-    @Generated
-    @Column(name = "ID", nullable = false, updatable = false)
-    private Long id;
+    @Column(name = "USERNAME", nullable = false, updatable = false)
+    private String username;
     @Column(name = "LOCATION", nullable = false, length = 200)
     private String location;
     @Column(name = "POSTAL_CODE", nullable = false, length = 200)
@@ -33,12 +30,12 @@ public class User extends PanacheEntityBase {
     public User() {
     }
 
-    public Long getId() {
-        return this.id;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getLocation() {
@@ -82,7 +79,7 @@ public class User extends PanacheEntityBase {
     }
 
     private User(UserBuilder builder) {
-        this.id = builder.id;
+        this.username = builder.username;
         this.location = builder.location;
         this.postalCode = builder.postalCode;
         this.phoneNumber = builder.phoneNumber;
@@ -91,15 +88,15 @@ public class User extends PanacheEntityBase {
     }
 
     public static class UserBuilder {
-        private Long id;
+        private String username;
         private String location;
         private String postalCode;
         private String phoneNumber;
         private String country;
         private List<Ticket> tickets;
 
-        public UserBuilder setId(Long id) {
-            this.id = id;
+        public UserBuilder setUsername(String username) {
+            this.username = username;
             return this;
         }
 

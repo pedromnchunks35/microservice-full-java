@@ -10,7 +10,6 @@ public class TicketDTO {
     private short month;
     private short year;
     private short hour;
-
     public UserDTO getUser() {
         return this.user;
     }

@@ -17,7 +17,7 @@ public class UserMapperImpl {
                 .setPhoneNumber(userDTO.getPhoneNumber())
                 .setPostalCode(userDTO.getPostalCode())
                 .setTickets(TicketMapperImpl.ticketDTOlistToTicketList(userDTO.getTickets()))
-                .setId(userDTO.getId())
+                .setUsername(userDTO.getUsername())
                 .build();
     }
 
@@ -31,7 +31,7 @@ public class UserMapperImpl {
                 .setPhoneNumber(user.getPhoneNumber())
                 .setPostalCode(user.getPostalCode())
                 .setTickets(TicketMapperImpl.ticketListToTicketDTOList(user.getTickets()))
-                .setId(user.getId())
+                .setUsername(user.getUsername())
                 .build();
     }
 

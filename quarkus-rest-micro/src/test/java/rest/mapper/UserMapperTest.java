@@ -17,14 +17,12 @@ public class UserMapperTest {
     public void userToUserDTOTest() {
         User user = new User.UserBuilder()
                 .setCountry("PT")
-                .setId(Long.valueOf(1))
                 .setLocation("Braga")
                 .setPhoneNumber("929251962")
                 .setPostalCode("Posta do bacalhau")
                 .build();
         UserDTO userDTO = UserMapperImpl.userToUserDTO(user);
         assertEquals(user.getCountry(), userDTO.getCountry());
-        assertEquals(user.getId(), userDTO.getId());
         assertEquals(user.getLocation(), userDTO.getLocation());
         assertEquals(user.getPhoneNumber(), userDTO.getPhoneNumber());
         assertEquals(user.getPostalCode(), userDTO.getPostalCode());
@@ -34,14 +32,12 @@ public class UserMapperTest {
     public void userDTOtoUserTest() {
         UserDTO userDTO = new UserDTO.UserDTOBuilder()
                 .setCountry("PT")
-                .setId(Long.valueOf(1))
                 .setLocation("Braga")
                 .setPhoneNumber("929251962")
                 .setPostalCode("Posta do bacalhau")
                 .build();
         User user = UserMapperImpl.userDTOtoUser(userDTO);
         assertEquals(user.getCountry(), userDTO.getCountry());
-        assertEquals(user.getId(), userDTO.getId());
         assertEquals(user.getLocation(), userDTO.getLocation());
         assertEquals(user.getPhoneNumber(), userDTO.getPhoneNumber());
         assertEquals(user.getPostalCode(), userDTO.getPostalCode());
@@ -53,7 +49,6 @@ public class UserMapperTest {
         for (int i = 0; i < 10; i++) {
             User user = new User.UserBuilder()
                     .setCountry("PT")
-                    .setId(Long.valueOf(1))
                     .setLocation("Braga")
                     .setPhoneNumber("929251962")
                     .setPostalCode("Posta do bacalhau")
@@ -63,7 +58,6 @@ public class UserMapperTest {
         List<UserDTO> userDTOList = UserMapperImpl.userListToUserDTOList(userList);
         for (int i = 0; i < 10; i++) {
             assertEquals(userList.get(i).getCountry(), userDTOList.get(i).getCountry());
-            assertEquals(userList.get(i).getId(), userDTOList.get(i).getId());
             assertEquals(userList.get(i).getLocation(), userDTOList.get(i).getLocation());
             assertEquals(userList.get(i).getPhoneNumber(), userDTOList.get(i).getPhoneNumber());
             assertEquals(userList.get(i).getPostalCode(), userDTOList.get(i).getPostalCode());
@@ -76,7 +70,6 @@ public class UserMapperTest {
         for (int i = 0; i < 10; i++) {
             UserDTO userDTO = new UserDTO.UserDTOBuilder()
                     .setCountry("PT")
-                    .setId(Long.valueOf(1))
                     .setLocation("Braga")
                     .setPhoneNumber("929251962")
                     .setPostalCode("Posta do bacalhau")
@@ -86,7 +79,6 @@ public class UserMapperTest {
         List<User> userList = UserMapperImpl.userDTOListToUserList(userDTOList);
         for (int i = 0; i < 10; i++) {
             assertEquals(userList.get(i).getCountry(), userDTOList.get(i).getCountry());
-            assertEquals(userList.get(i).getId(), userDTOList.get(i).getId());
             assertEquals(userList.get(i).getLocation(), userDTOList.get(i).getLocation());
             assertEquals(userList.get(i).getPhoneNumber(), userDTOList.get(i).getPhoneNumber());
             assertEquals(userList.get(i).getPostalCode(), userDTOList.get(i).getPostalCode());
