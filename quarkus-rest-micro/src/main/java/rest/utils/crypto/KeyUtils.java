@@ -7,35 +7,30 @@ import java.nio.file.Path;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.PrivateKey;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
+import java.security.spec.PKCS8EncodedKeySpec;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
-import org.json.JSONObject;
-
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
-
-import rest.dto.TicketDTO;
-import rest.entity.Ticket;
 import rest.exceptions.InvalidKeyException;
-import rest.mapper.TicketMapperImpl;
 
 public class KeyUtils {
     /**
      * @param pemCertificate, the certificate in string form
      * @return The actual string of the public or private key
      */
-    private static String removeX509Headers(String pemCertificate) {
+    public static String removeX509Headers(String pemCertificate) {
         return pemCertificate
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
-                .replaceAll("\\s", ""); // ? This is to remove the white space
+                .replaceAll("\\s+", "");
     }
 
     /**
@@ -43,7 +38,7 @@ public class KeyUtils {
      *                        key or not
      * @return boolean, true in case it is a valid public key otherwise false
      */
-    private static boolean isItValidPublicKey(String pemCertificate) {
+    public static boolean isItValidPublicKey(String pemCertificate) {
         // ? Check delimiters
         if (!pemCertificate.contains("-----BEGIN PUBLIC KEY-----")
                 || !pemCertificate.contains("-----END PUBLIC KEY-----")) {
@@ -110,12 +105,46 @@ public class KeyUtils {
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
      */
-    public static PublicKey getPublicKeyFromPem(String publicKeyPem)
+    public static PublicKey getPublicKeyFromKeyWithNoHeaders(String publicKeyPem)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] encoded = Base64.getDecoder().decode(publicKeyPem);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec keyspec = new X509EncodedKeySpec(encoded);
         return keyFactory.generatePublic(keyspec);
+    }
+
+    /**
+     * @param privateKeyPem, This is the private key without the headers
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
+    public static PrivateKey getPrivateKeyFromKeyWithNoHeaders(String privateKeyPem)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] decoded = Base64.getDecoder().decode(privateKeyPem);
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        return kf.generatePrivate(spec);
+    }
+
+    /**
+     * @param privateKey,    privatekey
+     * @param encryptedData, encrypted data in string format
+     * @return
+     * @throws java.security.InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException
+     */
+    public static String decryptMessage(PrivateKey privateKey, String encryptedData)
+            throws java.security.InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+            IllegalBlockSizeException, BadPaddingException {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
+        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 
     /**
@@ -127,12 +156,12 @@ public class KeyUtils {
      * @throws NoSuchPaddingException
      * @throws NoSuchAlgorithmException
      */
-    public static String encryptTicket(TicketDTO ticket, PublicKey pubKey) throws java.security.InvalidKeyException,
+    public static String encryptTicket(String ticketJSONString, PublicKey pubKey)
+            throws java.security.InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
-        JSONObject jsonForm = TicketMapperImpl.ticketDTOtoJsonObject(ticket);
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-        byte[] encryptedBytes = cipher.doFinal(jsonForm.toString().getBytes());
+        byte[] encryptedBytes = cipher.doFinal(ticketJSONString.getBytes(StandardCharsets.UTF_8));
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 }

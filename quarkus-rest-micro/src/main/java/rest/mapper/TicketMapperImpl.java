@@ -63,7 +63,7 @@ public class TicketMapperImpl {
 
     public static JSONObject ticketDTOtoJsonObject(TicketDTO ticketDTO) {
         JSONObject jsonForm = new JSONObject();
-        jsonForm.put("id", ticketDTO.getId());
+        jsonForm.put("id", ticketDTO.getId().toString());
         jsonForm.put("day", ticketDTO.getDay());
         jsonForm.put("hour", ticketDTO.getHour());
         jsonForm.put("month", ticketDTO.getMonth());
