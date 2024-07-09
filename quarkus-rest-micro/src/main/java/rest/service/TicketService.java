@@ -54,4 +54,13 @@ public class TicketService implements PanacheRepositoryBase<Ticket, UUID> {
         Ticket ticket = find("order by createdAt desc").firstResult();
         return TicketMapperImpl.ticketToTicketDTO(ticket);
     }
+
+    public boolean deleteTicketById(UUID id) {
+        TicketDTO checkObj = getTicketsById(id);
+        if (checkObj == null) {
+            return false;
+        }
+        delete(TicketMapperImpl.ticketDTOtoTicket(checkObj));
+        return true;
+    }
 }
