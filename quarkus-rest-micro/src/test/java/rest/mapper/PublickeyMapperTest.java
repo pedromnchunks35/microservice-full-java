@@ -19,12 +19,11 @@ public class PublickeyMapperTest {
         PublicKey pubkey = new PublicKey.PublicKeyBuilder()
                 .setId(Long.valueOf(1))
                 .setchangedAt(new Date())
-                .setcreatedBy(new byte[] { 111, 010, 011 })
+                .setKey(new byte[] { 111, 010, 011 })
                 .build();
         PublicKeyDTO pubkeyDTO = PublicKeyMapperImpl.publicKeyToPublicKeyDTO(pubkey);
         assertEquals(pubkeyDTO.getId(), pubkey.getId());
         assertEquals(pubkeyDTO.getChangedAt(), pubkey.getchangedAt());
-        assertEquals(pubkey.getcreatedBy(), pubkeyDTO.getCreatedBy());
     }
 
     @Test
@@ -32,12 +31,11 @@ public class PublickeyMapperTest {
         PublicKeyDTO pubkeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setId(Long.valueOf(1))
                 .setChangedAt(new Date())
-                .setCreatedBy(new byte[] { 111, 11, 00 })
+                .setKey(new byte[] { 111, 11, 00 })
                 .build();
         PublicKey pubkey = PublicKeyMapperImpl.publicKeyDTOtoPublicKey(pubkeyDTO);
         assertEquals(pubkeyDTO.getId(), pubkey.getId());
         assertEquals(pubkeyDTO.getChangedAt(), pubkey.getchangedAt());
-        assertEquals(pubkey.getcreatedBy(), pubkeyDTO.getCreatedBy());
     }
 
     @Test
@@ -47,7 +45,7 @@ public class PublickeyMapperTest {
             PublicKey pubkey = new PublicKey.PublicKeyBuilder()
                     .setId(Long.valueOf(1))
                     .setchangedAt(new Date())
-                    .setcreatedBy(new byte[] { 111, 010, 011 })
+                    .setKey(new byte[] { 111, 010, 011 })
                     .build();
             pubKeyList.add(pubkey);
         }
@@ -55,7 +53,6 @@ public class PublickeyMapperTest {
         for (int i = 0; i < 10; i++) {
             assertEquals(publicKeyDTOList.get(i).getId(), pubKeyList.get(i).getId());
             assertEquals(publicKeyDTOList.get(i).getChangedAt(), pubKeyList.get(i).getchangedAt());
-            assertEquals(publicKeyDTOList.get(i).getCreatedBy(), pubKeyList.get(i).getcreatedBy());
         }
     }
 
@@ -66,7 +63,7 @@ public class PublickeyMapperTest {
             PublicKeyDTO pubkey = new PublicKeyDTO.PublicKeyDTOBuilder()
                     .setId(Long.valueOf(1))
                     .setChangedAt(new Date())
-                    .setCreatedBy(new byte[] { 111, 010, 011 })
+                    .setKey(new byte[] { 111, 010, 011 })
                     .build();
             publicKeyDTOList.add(pubkey);
         }
@@ -74,7 +71,6 @@ public class PublickeyMapperTest {
         for (int i = 0; i < 10; i++) {
             assertEquals(publicKeyDTOList.get(i).getId(), publicKeyList.get(i).getId());
             assertEquals(publicKeyDTOList.get(i).getChangedAt(), publicKeyList.get(i).getchangedAt());
-            assertEquals(publicKeyDTOList.get(i).getCreatedBy(), publicKeyList.get(i).getcreatedBy());
         }
     }
 }

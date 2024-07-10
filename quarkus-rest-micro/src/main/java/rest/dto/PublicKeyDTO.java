@@ -8,8 +8,9 @@ import rest.entity.Ticket;
 public class PublicKeyDTO {
     private Long id;
     private Date changedAt;
-    private byte[] createdBy;
+    private byte[] key;
     private List<Ticket> tickets;
+    private boolean inUsage;
 
     public PublicKeyDTO() {
     }
@@ -17,8 +18,18 @@ public class PublicKeyDTO {
     public static class PublicKeyDTOBuilder {
         private Long id;
         private Date changedAt;
-        private byte[] createdBy;
+        private byte[] key;
         private List<Ticket> tickets;
+        private boolean inUsage;
+
+        public boolean isInUsage() {
+            return this.inUsage;
+        }
+
+        public PublicKeyDTOBuilder setInUsage(boolean inUsage) {
+            this.inUsage = inUsage;
+            return this;
+        }
 
         public List<Ticket> getTicket() {
             return tickets;
@@ -47,12 +58,12 @@ public class PublicKeyDTO {
             return this;
         }
 
-        public byte[] getCreatedBy() {
-            return this.createdBy;
+        public byte[] getKey() {
+            return this.key;
         }
 
-        public PublicKeyDTOBuilder setCreatedBy(byte[] createdBy) {
-            this.createdBy = createdBy;
+        public PublicKeyDTOBuilder setKey(byte[] key) {
+            this.key = key;
             return this;
         }
 
@@ -72,7 +83,7 @@ public class PublicKeyDTO {
     private PublicKeyDTO(PublicKeyDTOBuilder builder) {
         this.id = builder.id;
         this.changedAt = builder.changedAt;
-        this.createdBy = builder.createdBy;
+        this.key = builder.key;
     }
 
     public Long getId() {
@@ -91,12 +102,19 @@ public class PublicKeyDTO {
         this.changedAt = changedAt;
     }
 
-    public byte[] getCreatedBy() {
-        return this.createdBy;
+    public byte[] getKey() {
+        return this.key;
     }
 
-    public void setCreatedBy(byte[] createdBy) {
-        this.createdBy = createdBy;
+    public void setKey(byte[] Key) {
+        this.key = Key;
     }
 
+    public boolean isInUsage() {
+        return this.inUsage;
+    }
+
+    public void setInUsage(boolean inUsage) {
+        this.inUsage = inUsage;
+    }
 }

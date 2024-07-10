@@ -1,5 +1,7 @@
 package rest.controller.Ticket.POST;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -13,7 +15,7 @@ public class TicketControllerPost {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTicket(TicketDTO ticketDTO) {
+    public Response createTicket(@RequestBody TicketDTO ticketDTO) {
         return Response.ok(ticketDTO).status(Response.Status.CREATED).build();
     }
 }

@@ -26,7 +26,7 @@ public class TicketService implements PanacheRepositoryBase<Ticket, UUID> {
      */
     public List<TicketDTO> getTicketsByUsername(String username, int page, int size) {
         List<Ticket> ticket = getEntityManager()
-                .createQuery("SELECT * FROM Ticket t JOIN t.user u JOIN t.publicKey", Ticket.class)
+                .createQuery("FROM Ticket t JOIN t.user u JOIN t.publicKey", Ticket.class)
                 .setFirstResult(page * size)
                 .setMaxResults(size)
                 .getResultList();

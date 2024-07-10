@@ -11,7 +11,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import rest.dto.PublicKeyDTO;
 import rest.dto.TicketDTO;
 import rest.dto.UserDTO;
-import rest.mapper.PublicKeyMapperImpl;
 import rest.mapper.TicketMapperImpl;
 import rest.service.PublicKeyService;
 import rest.service.TicketService;
@@ -27,7 +26,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
-import java.util.Base64;
 
 @QuarkusTest
 public class KeyUtilsTest {
@@ -52,7 +50,7 @@ public class KeyUtilsTest {
                                 "-----END PUBLIC KEY-----";
                 when(publicKeyService.getPublicKeyById(Long.valueOf(1)))
                                 .thenReturn(new PublicKeyDTO.PublicKeyDTOBuilder()
-                                                .setCreatedBy(pubkey.getBytes())
+                                                .setKey(pubkey.getBytes())
                                                 .setChangedAt(new Date())
                                                 .setId(Long.valueOf(1))
                                                 .build());
@@ -107,7 +105,7 @@ public class KeyUtilsTest {
                 JSONObject jsonFormOfTicket = TicketMapperImpl.ticketDTOtoJsonObject(ticketDTO);
                 // ? Getting the publickey
                 PublicKeyDTO publicKeyDTO = publicKeyService.getPublicKeyById(Long.valueOf(1));
-                String publicKeyStringForm = new String(publicKeyDTO.getCreatedBy());
+                String publicKeyStringForm = new String(publicKeyDTO.getKey());
                 String publicKeyWithoutHeaders = KeyUtils.removeX509Headers(publicKeyStringForm);
                 PublicKey publicKey = KeyUtils.getPublicKeyFromKeyWithNoHeaders(publicKeyWithoutHeaders);
                 // ? Encrypt the ticket
@@ -125,6 +123,6 @@ public class KeyUtilsTest {
                 JSONObject ticketJson = new JSONObject(decryptedData);
                 assertEquals((Integer) ticketJson.get("day"), Integer.valueOf(3));
                 assertEquals((String) ticketJson.get("username"), "carambolas123");
-                assertEquals(UUID.fromString((String)ticketJson.get("id")), randomId);
+                assertEquals(UUID.fromString((String) ticketJson.get("id")), randomId);
         }
 }

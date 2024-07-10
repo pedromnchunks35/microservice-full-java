@@ -1,9 +1,12 @@
 package rest.controller.PublicKey.PUT;
 
-import jakarta.enterprise.inject.Produces;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import rest.dto.GeneralResponse;
@@ -17,7 +20,9 @@ public class PublicKeyControllerPUT {
     PublicKeyService publicKeyService;
 
     @PUT
-    public Response updatePublicKey(PublicKeyDTO updatePublicKey) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePublicKey(@RequestBody PublicKeyDTO updatePublicKey) {
         PublicKeyDTO isUpdated;
         try {
             isUpdated = publicKeyService.updatePublicKey(updatePublicKey);

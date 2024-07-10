@@ -9,11 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "USER_APP")
 public class User extends PanacheEntityBase {
     @Id
+    @NotBlank
     @Column(name = "USERNAME", nullable = false, updatable = false)
     private String username;
     @Column(name = "LOCATION", nullable = false, length = 200)
