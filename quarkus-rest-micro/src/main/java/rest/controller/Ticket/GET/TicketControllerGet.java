@@ -32,6 +32,14 @@ public class TicketControllerGet {
     @Path("/getById/{id}")
     public Response getTicketById(@PathParam("id") UUID id) {
         TicketDTO response = ticketService.getTicketsById(id);
+        if (response == null) {
+            return Response.ok(
+                    new GeneralResponse.GeneralResponseBuilder<>()
+                            .setMessage("Error, no ticket with that id got found")
+                            .build())
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        }
         return Response.ok(response).status(Response.Status.OK).build();
     }
 

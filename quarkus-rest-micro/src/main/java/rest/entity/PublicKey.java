@@ -25,10 +25,12 @@ public class PublicKey extends PanacheEntityBase {
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date changedAt;
-    @Column(name = "CREATED_BY", nullable = false, updatable = false)
-    private byte[] createdBy;
+    @Column(name = "KEY", nullable = false, updatable = false)
+    private byte[] key;
     @OneToMany(mappedBy = "publicKey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
+    @Column(name = "IN_USAGE", nullable = false, updatable = false)
+    private boolean inUsage;
 
     public PublicKey() {
     }
@@ -55,22 +57,30 @@ public class PublicKey extends PanacheEntityBase {
         this.changedAt = changedAt;
     }
 
-    public byte[] getcreatedBy() {
-        return this.createdBy;
+    public byte[] getKey() {
+        return this.key;
     }
 
-    public void setcreatedBy(byte[] createdBy) {
-        this.createdBy = createdBy;
+    public void setKey(byte[] key) {
+        this.key = key;
     }
 
     private PublicKey(PublicKeyBuilder builder) {
         this.id = builder.id;
         this.changedAt = builder.changedAt;
-        this.createdBy = builder.createdBy;
+        this.key = builder.key;
     }
 
     public List<Ticket> getTickets() {
         return tickets;
+    }
+
+    public boolean isInUsage() {
+        return this.inUsage;
+    }
+
+    public void setInUsage(boolean inUsage) {
+        this.inUsage = inUsage;
     }
 
     public void setTickets(List<Ticket> tickets) {
@@ -80,8 +90,18 @@ public class PublicKey extends PanacheEntityBase {
     public static class PublicKeyBuilder {
         private Long id;
         private Date changedAt;
-        private byte[] createdBy;
+        private byte[] key;
         private List<Ticket> tickets;
+        private boolean inUsage;
+
+        public Object getInUsage() {
+            return this.inUsage;
+        }
+
+        public PublicKeyBuilder setInUsage(boolean inUsage) {
+            this.inUsage = inUsage;
+            return this;
+        }
 
         public PublicKeyBuilder() {
         }
@@ -113,12 +133,12 @@ public class PublicKey extends PanacheEntityBase {
             return this;
         }
 
-        public byte[] getcreatedBy() {
-            return this.createdBy;
+        public byte[] getKey() {
+            return this.key;
         }
 
-        public PublicKeyBuilder setcreatedBy(byte[] createdBy) {
-            this.createdBy = createdBy;
+        public PublicKeyBuilder setKey(byte[] key) {
+            this.key = key;
             return this;
         }
 

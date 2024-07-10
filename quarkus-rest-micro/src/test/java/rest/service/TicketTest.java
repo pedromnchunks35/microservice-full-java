@@ -1,7 +1,6 @@
 package rest.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 
 import java.util.Date;
 import java.util.UUID;
@@ -37,10 +36,10 @@ public class TicketTest {
                 PublicKey publicKey = new PublicKey.PublicKeyBuilder()
                                 .setId(id_public_key)
                                 .setchangedAt(new Date())
-                                .setcreatedBy(new byte[] { 111, 00, 11 })
+                                .setKey(new byte[] { 111, 00, 11 })
                                 .build();
-                Long id_user = Long.valueOf(1);
                 User user = new User.UserBuilder()
+                                .setUsername("Pedro")
                                 .setCountry("PT")
                                 .setLocation("Lado B")
                                 .setPhoneNumber("939249242")
@@ -72,9 +71,8 @@ public class TicketTest {
                 PublicKey publicKey = new PublicKey.PublicKeyBuilder()
                                 .setId(id_public_key)
                                 .setchangedAt(new Date())
-                                .setcreatedBy(new byte[] { 111, 00, 11 })
+                                .setKey(new byte[] { 111, 00, 11 })
                                 .build();
-                Long id_user = Long.valueOf(1);
                 User user = new User.UserBuilder()
                                 .setCountry("PT")
                                 .setLocation("Lado B")

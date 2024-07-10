@@ -1,5 +1,7 @@
 package rest.controller.Ticket.PUT;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.PUT;
@@ -18,7 +20,7 @@ public class TicketControllerPut {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTicket(TicketDTO ticketDTO) {
+    public Response updateTicket(@RequestBody TicketDTO ticketDTO) {
         return Response.ok(ticketDTO).status(Response.Status.OK).build();
     }
 }
