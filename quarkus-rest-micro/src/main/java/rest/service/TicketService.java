@@ -7,6 +7,8 @@ import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import rest.dto.TicketDTO;
 import rest.entity.Ticket;
+import rest.exceptions.AlreadyExistsException;
+import rest.exceptions.DoesNotExistException;
 import rest.mapper.TicketMapperImpl;
 
 @ApplicationScoped
@@ -55,6 +57,10 @@ public class TicketService implements PanacheRepositoryBase<Ticket, UUID> {
         return TicketMapperImpl.ticketToTicketDTO(ticket);
     }
 
+    /**
+     * @param id, id of the ticket to delete
+     * @return
+     */
     public boolean deleteTicketById(UUID id) {
         TicketDTO checkObj = getTicketsById(id);
         if (checkObj == null) {
@@ -62,5 +68,23 @@ public class TicketService implements PanacheRepositoryBase<Ticket, UUID> {
         }
         delete(TicketMapperImpl.ticketDTOtoTicket(checkObj));
         return true;
+    }
+
+    /**
+     * @param newTicket, the ticket to save
+     * @return
+     * @throws AlreadyExistsException, case it already exists because we have an id
+     * @throws DoesNotExistException,  the public key does not exist
+     */
+    public TicketDTO createTicket(TicketDTO newTicket) throws AlreadyExistsException, DoesNotExistException {
+        if (newTicket.getId() != null) {
+            throw new AlreadyExistsException("ticket");
+        }
+        if (newTicket.getPublicKey() == null || newTicket.getPublicKey().getId() == null) {
+            throw new DoesNotExistException("publickey");
+        }
+        Ticket ticketToSave = TicketMapperImpl.ticketDTOtoTicket(newTicket);
+        persist(ticketToSave);
+        return newTicket;
     }
 }

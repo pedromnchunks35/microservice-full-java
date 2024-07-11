@@ -59,6 +59,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
         }
         return newPublicKey;
     }
+
     /**
      * @param id
      * @return
@@ -72,5 +73,29 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
             delete(PublicKeyMapperImpl.publicKeyDTOtoPublicKey(checkObj));
         }
         return true;
+    }
+
+    /**
+     * @param id, the id of the public key that we wish to set as the main public
+     *            key
+     * @return
+     * @throws DoesNotExistException
+     */
+    public boolean setMainPublicKey(Long id) throws DoesNotExistException {
+        PublicKeyDTO checkObj = getPublicKeyById(id);
+        if (checkObj == null) {
+            throw new DoesNotExistException("publickey");
+        }
+        update("IN_USAGE=false WHERE IN_USAGE=true");
+        update("IN_USAGE=true WHERE ID=?1", id);
+        return true;
+    }
+
+    /**
+     * @return the current in usage publickey
+     */
+    public PublicKeyDTO getMainPublicKey() {
+        PublicKey queryResult = find("* WHERE IN_USAGE=true").firstResult();
+        return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(queryResult);
     }
 }
