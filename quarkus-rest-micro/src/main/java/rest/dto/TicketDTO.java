@@ -10,6 +10,16 @@ public class TicketDTO {
     private short month;
     private short year;
     private short hour;
+    private String encryptedTicket;
+
+    public String getEncryptedTicket() {
+        return this.encryptedTicket;
+    }
+
+    public void setEncryptedTicket(String encryptedTicket) {
+        this.encryptedTicket = encryptedTicket;
+    }
+
     public UserDTO getUser() {
         return this.user;
     }
@@ -77,6 +87,12 @@ public class TicketDTO {
         private short hour;
         private UserDTO user;
         private PublicKeyDTO publicKey;
+        private String encryptedTicket;
+
+        public TicketDTOBuilder setEncryptedTicket(String encryptedTicket) {
+            this.encryptedTicket = encryptedTicket;
+            return this;
+        }
 
         public TicketDTOBuilder setUser(UserDTO user) {
             this.user = user;
@@ -126,5 +142,6 @@ public class TicketDTO {
         this.month = builder.month;
         this.year = builder.year;
         this.hour = builder.hour;
+        this.encryptedTicket = builder.encryptedTicket;
     }
 }

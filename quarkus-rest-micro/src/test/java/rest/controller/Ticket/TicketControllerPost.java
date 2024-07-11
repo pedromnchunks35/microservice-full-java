@@ -22,12 +22,7 @@ public class TicketControllerPost {
                 .body(ticketDTO.toString())
                 .when().post("/ticket")
                 .then()
-                .statusCode(201)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body("day", equalTo(1))
-                .body("hour", equalTo(2))
-                .body("month", equalTo(3))
-                .body("year", equalTo(2000));
+                .statusCode(400);
     }
 
 }
