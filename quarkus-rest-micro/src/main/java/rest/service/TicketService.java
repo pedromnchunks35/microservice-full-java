@@ -85,6 +85,6 @@ public class TicketService implements PanacheRepositoryBase<Ticket, UUID> {
         }
         Ticket ticketToSave = TicketMapperImpl.ticketDTOtoTicket(newTicket);
         persist(ticketToSave);
-        return newTicket;
+        return TicketMapperImpl.ticketToTicketDTO(ticketToSave);
     }
 }

@@ -84,6 +84,7 @@ public class PublicKeyDTO {
         this.id = builder.id;
         this.changedAt = builder.changedAt;
         this.key = builder.key;
+        this.inUsage = builder.inUsage;
     }
 
     public Long getId() {

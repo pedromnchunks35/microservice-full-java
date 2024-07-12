@@ -16,6 +16,7 @@ public class PublicKeyMapperImpl {
                 .setchangedAt(publicKeyDTO.getChangedAt())
                 .setKey(publicKeyDTO.getKey())
                 .setTickets(publicKeyDTO.getTickets())
+                .setInUsage(publicKeyDTO.isInUsage())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public class PublicKeyMapperImpl {
                 .setChangedAt(publicKey.getchangedAt())
                 .setKey(publicKey.getKey())
                 .setTickets(publicKey.getTickets())
+                .setInUsage(publicKey.isInUsage())
                 .build();
     }
 

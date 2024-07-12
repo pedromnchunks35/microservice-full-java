@@ -3,92 +3,68 @@ package rest.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
-import java.util.UUID;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import io.quarkus.panache.mock.PanacheMock;
-import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
+import rest.dto.PublicKeyDTO;
 import rest.dto.TicketDTO;
-import rest.entity.PublicKey;
-import rest.entity.Ticket;
-import rest.entity.User;
-import rest.mapper.TicketMapperImpl;
+import rest.dto.UserDTO;
+import rest.exceptions.AlreadyExistsException;
+import rest.exceptions.DoesNotExistException;
 
 @QuarkusTest
 public class TicketTest {
-        @BeforeEach
-        public void setup() {
-                PanacheMock.mock(Ticket.class);
-                PanacheMock.mock(PublicKey.class);
-                PanacheMock.mock(User.class);
-        }
-
-        @InjectMock
+        @Inject
         TicketService ticketService;
+        @Inject
+        PublicKeyService publicKeyService;
+        @Inject
+        UserService userService;
+        @Inject
+        UserTransaction userTransaction;
 
-        @Test
-        public void getTicketsByIdTest() {
-                Long id_public_key = Long.valueOf(1);
-                PublicKey publicKey = new PublicKey.PublicKeyBuilder()
-                                .setId(id_public_key)
-                                .setchangedAt(new Date())
-                                .setKey(new byte[] { 111, 00, 11 })
-                                .build();
-                User user = new User.UserBuilder()
-                                .setUsername("Pedro")
-                                .setCountry("PT")
-                                .setLocation("Lado B")
-                                .setPhoneNumber("939249242")
-                                .setPostalCode("Rua das camelias")
-                                .build();
-                UUID id_ticket = UUID.randomUUID();
-                Ticket ticket = new Ticket.TicketBuilder()
-                                .setDay((short) 1)
-                                .setHour((short) 2)
-                                .setId(id_ticket)
-                                .setMonth((short) 7)
-                                .setPublicKey(publicKey)
-                                .setUser(user)
-                                .setYear((short) 2000)
-                                .build();
-                assertEquals(Ticket.findById(id_ticket), null);
-                Mockito.when(Ticket.findById(id_ticket)).thenReturn(ticket);
-                assertEquals(Ticket.findById(id_ticket), ticket);
-                Mockito.when(ticketService.getTicketsById(id_ticket))
-                                .thenReturn(TicketMapperImpl.ticketToTicketDTO(ticket));
-                TicketDTO ticketDTO = ticketService.getTicketsById(id_ticket);
-                assertEquals(ticketDTO.getId(), TicketMapperImpl.ticketToTicketDTO(ticket).getId());
+        @BeforeEach
+        public void setUp() throws NotSupportedException, SystemException {
+                userTransaction.begin();
+        }
+
+        @AfterEach
+        public void clean() throws IllegalStateException, SecurityException, SystemException {
+                userTransaction.rollback();
         }
 
         @Test
-        public void getTicketsByUsernameTest() {
-                // ? Create a single ticket
-                Long id_public_key = Long.valueOf(1);
-                PublicKey publicKey = new PublicKey.PublicKeyBuilder()
-                                .setId(id_public_key)
-                                .setchangedAt(new Date())
-                                .setKey(new byte[] { 111, 00, 11 })
+        public void createTicketTest() throws AlreadyExistsException, DoesNotExistException {
+                UserDTO newUser = new UserDTO.UserDTOBuilder()
+                                .setCountry("PK")
+                                .setLocation("KKKKKK")
+                                .setPhoneNumber("929261723")
+                                .setPostalCode("4720-106")
+                                .setUsername("deletedUser")
                                 .build();
-                User user = new User.UserBuilder()
-                                .setCountry("PT")
-                                .setLocation("Lado B")
-                                .setPhoneNumber("939249242")
-                                .setPostalCode("Rua das camelias")
+                UserDTO resultantUser = userService.createUser(newUser);
+                PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
+                                .setChangedAt(new Date())
+                                .setInUsage(false)
+                                .setKey(new byte[] { 111, 111 })
                                 .build();
-                UUID id_ticket = UUID.randomUUID();
-                Ticket ticket = new Ticket.TicketBuilder()
+                PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
+                TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
                                 .setDay((short) 1)
-                                .setHour((short) 2)
-                                .setId(id_ticket)
-                                .setMonth((short) 7)
-                                .setPublicKey(publicKey)
-                                .setUser(user)
+                                .setHour((short) 1)
+                                .setUser(resultantUser)
+                                .setPublicKeyDTO(resultantPublicKey)
+                                .setMonth((short) 2)
                                 .setYear((short) 2000)
                                 .build();
-
+                TicketDTO resultantTicket = ticketService.createTicket(ticket);
+                assertEquals(ticket.getYear(), resultantTicket.getYear());
         }
 }
