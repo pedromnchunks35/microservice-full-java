@@ -37,13 +37,19 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @throws DoesNotExistException
      */
     public PublicKeyDTO updatePublicKey(PublicKeyDTO updatePublicKey) throws DoesNotExistException {
-        PublicKeyDTO checkObj = getPublicKeyById(updatePublicKey.getId());
-        if (checkObj == null) {
+        PublicKey result = findById(updatePublicKey.getId());
+        if (result == null) {
             throw new DoesNotExistException("publickey");
         } else {
-            persist(PublicKeyMapperImpl.publicKeyDTOtoPublicKey(updatePublicKey));
+            if (updatePublicKey.getChangedAt() != null) {
+                result.setchangedAt(updatePublicKey.getChangedAt());
+            }
+            if (updatePublicKey.getKey() != null) {
+                result.setKey(updatePublicKey.getKey());
+            }
+            persist(result);
         }
-        return updatePublicKey;
+        return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(result);
     }
 
     /**
@@ -52,12 +58,13 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @throws AlreadyExistsException
      */
     public PublicKeyDTO createPublicKey(PublicKeyDTO newPublicKey) throws AlreadyExistsException {
+        PublicKey pubKey = PublicKeyMapperImpl.publicKeyDTOtoPublicKey(newPublicKey);
         if (newPublicKey.getId() != null) {
             throw new AlreadyExistsException("publickey");
         } else {
-            persist(PublicKeyMapperImpl.publicKeyDTOtoPublicKey(newPublicKey));
+            persist(pubKey);
         }
-        return newPublicKey;
+        return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(pubKey);
     }
 
     /**
@@ -86,8 +93,8 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
         if (checkObj == null) {
             throw new DoesNotExistException("publickey");
         }
-        update("IN_USAGE=false WHERE IN_USAGE=true");
-        update("IN_USAGE=true WHERE ID=?1", id);
+        update("inUsage=false WHERE inUsage=true");
+        update("inUsage=true WHERE id=?1", id);
         return true;
     }
 
@@ -95,7 +102,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @return the current in usage publickey
      */
     public PublicKeyDTO getMainPublicKey() {
-        PublicKey queryResult = find("* WHERE IN_USAGE=true").firstResult();
+        PublicKey queryResult = find("inUsage",true).firstResult();
         return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(queryResult);
     }
 }

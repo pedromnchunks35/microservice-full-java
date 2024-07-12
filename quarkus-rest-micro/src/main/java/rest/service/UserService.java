@@ -37,14 +37,14 @@ public class UserService implements PanacheRepository<User> {
      * @throws AlreadyExistsException
      */
     public UserDTO createUser(UserDTO newUser) throws AlreadyExistsException {
-        User user = UserMapperImpl.userDTOtoUser(newUser);
-        UserDTO checkUser = getUserByUsername(user.getUsername());
-        if (checkUser == null) {
+        User user = find("username", newUser.getUsername()).firstResult();
+        if (user == null) {
+            user = UserMapperImpl.userDTOtoUser(newUser);
             persist(user);
         } else {
             throw new AlreadyExistsException("user");
         }
-        return newUser;
+        return UserMapperImpl.userToUserDTO(user);
     }
 
     /**
@@ -53,10 +53,21 @@ public class UserService implements PanacheRepository<User> {
      * @throws DoesNotExistException
      */
     public UserDTO updateUser(UserDTO newUser) throws DoesNotExistException {
-        User user = UserMapperImpl.userDTOtoUser(newUser);
-        UserDTO checkUser = getUserByUsername(user.getUsername());
-        if (checkUser != null) {
-            persist(user);
+        User result = find("username", newUser.getUsername()).firstResult();
+        if (newUser.getCountry() != null) {
+            result.setCountry(newUser.getCountry());
+        }
+        if (newUser.getLocation() != null) {
+            result.setLocation(newUser.getLocation());
+        }
+        if (newUser.getPhoneNumber() != null) {
+            result.setPhoneNumber(newUser.getPhoneNumber());
+        }
+        if (newUser.getPostalCode() != null) {
+            result.setPostalCode(newUser.getPostalCode());
+        }
+        if (result != null) {
+            persist(result);
         } else {
             throw new DoesNotExistException("user");
         }
@@ -69,9 +80,9 @@ public class UserService implements PanacheRepository<User> {
      * @throws DoesNotExistException
      */
     public boolean deleteUser(String username) throws DoesNotExistException {
-        UserDTO checkUser = getUserByUsername(username);
+        User checkUser = find("username", username).firstResult();
         if (checkUser != null) {
-            delete(UserMapperImpl.userDTOtoUser(checkUser));
+            delete(checkUser);
         } else {
             throw new DoesNotExistException("user");
         }

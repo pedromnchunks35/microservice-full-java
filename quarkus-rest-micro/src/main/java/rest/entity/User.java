@@ -3,7 +3,6 @@ package rest.entity;
 import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,7 +25,7 @@ public class User extends PanacheEntityBase {
     private String phoneNumber;
     @Column(name = "COUNTRY", nullable = false, length = 200)
     private String country;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Ticket> tickets;
 
     public User() {
