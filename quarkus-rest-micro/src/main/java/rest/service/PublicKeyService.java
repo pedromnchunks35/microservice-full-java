@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import rest.dto.PublicKeyDTO;
 import rest.entity.PublicKey;
 import rest.exceptions.AlreadyExistsException;
@@ -17,6 +18,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @param size, size of each page
      * @return The list of a dto public key
      */
+    @Transactional
     public List<PublicKeyDTO> getAllPublicKeys(int page, int size) {
         List<PublicKey> result = findAll().page(page, size).list();
         return PublicKeyMapperImpl.publicKeyListToPublicKeyDTOList(result);
@@ -26,6 +28,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @param id, the id of the publickey we want to get
      * @return
      */
+    @Transactional
     public PublicKeyDTO getPublicKeyById(Long id) {
         PublicKey result = findById(id);
         return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(result);
@@ -36,6 +39,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @return
      * @throws DoesNotExistException
      */
+    @Transactional
     public PublicKeyDTO updatePublicKey(PublicKeyDTO updatePublicKey) throws DoesNotExistException {
         PublicKey result = findById(updatePublicKey.getId());
         if (result == null) {
@@ -57,6 +61,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @return
      * @throws AlreadyExistsException
      */
+    @Transactional
     public PublicKeyDTO createPublicKey(PublicKeyDTO newPublicKey) throws AlreadyExistsException {
         PublicKey pubKey = PublicKeyMapperImpl.publicKeyDTOtoPublicKey(newPublicKey);
         if (newPublicKey.getId() != null) {
@@ -72,6 +77,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @return
      * @throws DoesNotExistException
      */
+    @Transactional
     public boolean deletePublicKey(Long id) throws DoesNotExistException {
         PublicKeyDTO checkObj = getPublicKeyById(id);
         if (checkObj == null) {
@@ -88,6 +94,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      * @return
      * @throws DoesNotExistException
      */
+    @Transactional
     public boolean setMainPublicKey(Long id) throws DoesNotExistException {
         PublicKeyDTO checkObj = getPublicKeyById(id);
         if (checkObj == null) {
@@ -101,6 +108,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
     /**
      * @return the current in usage publickey
      */
+    @Transactional
     public PublicKeyDTO getMainPublicKey() {
         PublicKey queryResult = find("inUsage",true).firstResult();
         return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(queryResult);
