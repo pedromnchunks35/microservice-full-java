@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import rest.dto.UserDTO;
 import rest.entity.User;
 import rest.exceptions.AlreadyExistsException;
@@ -16,6 +17,7 @@ public class UserService implements PanacheRepository<User> {
      * @param username
      * @return a UserDTO object with this given username
      */
+    @Transactional
     public UserDTO getUserByUsername(String username) {
         User result = find("username", username).firstResult();
         return UserMapperImpl.userToUserDTO(result);
@@ -26,6 +28,7 @@ public class UserService implements PanacheRepository<User> {
      * @param size, the size of this page
      * @return a list with all the users in according to this parameters
      */
+    @Transactional
     public List<UserDTO> getAllUsers(int page, int size) {
         List<User> result = findAll().page(page, size).list();
         return UserMapperImpl.userListToUserDTOList(result);
@@ -36,6 +39,7 @@ public class UserService implements PanacheRepository<User> {
      * @return the user back because it went successfull
      * @throws AlreadyExistsException
      */
+    @Transactional
     public UserDTO createUser(UserDTO newUser) throws AlreadyExistsException {
         User user = find("username", newUser.getUsername()).firstResult();
         if (user == null) {
@@ -52,6 +56,7 @@ public class UserService implements PanacheRepository<User> {
      * @return the user back in case it goes well
      * @throws DoesNotExistException
      */
+    @Transactional
     public UserDTO updateUser(UserDTO newUser) throws DoesNotExistException {
         User result = find("username", newUser.getUsername()).firstResult();
         if (newUser.getCountry() != null) {
@@ -79,6 +84,7 @@ public class UserService implements PanacheRepository<User> {
      * @return true in case it goes ok
      * @throws DoesNotExistException
      */
+    @Transactional
     public boolean deleteUser(String username) throws DoesNotExistException {
         User checkUser = find("username", username).firstResult();
         if (checkUser != null) {

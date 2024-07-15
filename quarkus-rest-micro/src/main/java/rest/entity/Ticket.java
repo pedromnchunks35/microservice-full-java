@@ -25,10 +25,10 @@ public class Ticket extends PanacheEntityBase {
     @Column(name = "ID", nullable = false, updatable = false)
     private UUID id;
     @ManyToOne
-    @JoinColumn(name = "ID_USER", nullable = false, updatable = false)
+    @JoinColumn(name = "ID_USER")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "ID_PUBLIC_KEY", nullable = false, updatable = false)
+    @JoinColumn(name = "ID_PUBLIC_KEY")
     private PublicKey publicKey;
     @Column(name = "DAY", nullable = false)
     private short day;
