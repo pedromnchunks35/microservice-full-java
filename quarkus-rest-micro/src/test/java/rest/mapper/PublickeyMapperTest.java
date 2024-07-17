@@ -31,7 +31,7 @@ public class PublickeyMapperTest {
         PublicKeyDTO pubkeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setId(Long.valueOf(1))
                 .setChangedAt(new Date())
-                .setKey(new byte[] { 111, 11, 00 })
+                .setKey("lul")
                 .build();
         PublicKey pubkey = PublicKeyMapperImpl.publicKeyDTOtoPublicKey(pubkeyDTO);
         assertEquals(pubkeyDTO.getId(), pubkey.getId());
@@ -63,7 +63,7 @@ public class PublickeyMapperTest {
             PublicKeyDTO pubkey = new PublicKeyDTO.PublicKeyDTOBuilder()
                     .setId(Long.valueOf(1))
                     .setChangedAt(new Date())
-                    .setKey(new byte[] { 111, 010, 011 })
+                    .setKey("Lul")
                     .build();
             publicKeyDTOList.add(pubkey);
         }

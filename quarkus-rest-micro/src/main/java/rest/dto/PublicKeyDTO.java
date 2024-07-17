@@ -2,14 +2,13 @@ package rest.dto;
 
 import java.util.Date;
 import java.util.List;
-
 import rest.entity.Ticket;
 
 public class PublicKeyDTO {
     private Long id;
     private Date changedAt;
-    private byte[] key;
-    private List<Ticket> tickets;
+    private String key;
+    private List<TicketDTO> tickets;
     private boolean inUsage;
 
     public PublicKeyDTO() {
@@ -18,8 +17,8 @@ public class PublicKeyDTO {
     public static class PublicKeyDTOBuilder {
         private Long id;
         private Date changedAt;
-        private byte[] key;
-        private List<Ticket> tickets;
+        private String key;
+        private List<TicketDTO> tickets;
         private boolean inUsage;
 
         public boolean isInUsage() {
@@ -31,11 +30,11 @@ public class PublicKeyDTO {
             return this;
         }
 
-        public List<Ticket> getTicket() {
+        public List<TicketDTO> getTicket() {
             return tickets;
         }
 
-        public PublicKeyDTOBuilder setTickets(List<Ticket> tickets) {
+        public PublicKeyDTOBuilder setTickets(List<TicketDTO> tickets) {
             this.tickets = tickets;
             return this;
         }
@@ -58,11 +57,11 @@ public class PublicKeyDTO {
             return this;
         }
 
-        public byte[] getKey() {
+        public String getKey() {
             return this.key;
         }
 
-        public PublicKeyDTOBuilder setKey(byte[] key) {
+        public PublicKeyDTOBuilder setKey(String key) {
             this.key = key;
             return this;
         }
@@ -72,11 +71,11 @@ public class PublicKeyDTO {
         }
     }
 
-    public List<Ticket> getTickets() {
+    public List<TicketDTO> getTickets() {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(List<TicketDTO> tickets) {
         this.tickets = tickets;
     }
 
@@ -103,11 +102,11 @@ public class PublicKeyDTO {
         this.changedAt = changedAt;
     }
 
-    public byte[] getKey() {
+    public String getKey() {
         return this.key;
     }
 
-    public void setKey(byte[] Key) {
+    public void setKey(String Key) {
         this.key = Key;
     }
 

@@ -5,32 +5,63 @@ import java.util.List;
 
 import rest.dto.PublicKeyDTO;
 import rest.entity.PublicKey;
+import rest.utils.crypto.KeyUtils;
 
 public class PublicKeyMapperImpl {
     public static PublicKey publicKeyDTOtoPublicKey(PublicKeyDTO publicKeyDTO) {
         if (publicKeyDTO == null) {
             return null;
         }
-        return new PublicKey.PublicKeyBuilder()
+        PublicKey finalResult = new PublicKey.PublicKeyBuilder()
                 .setId(publicKeyDTO.getId())
                 .setchangedAt(publicKeyDTO.getChangedAt())
-                .setKey(publicKeyDTO.getKey())
-                .setTickets(publicKeyDTO.getTickets())
+                .setKey(KeyUtils.stringToByteArray(publicKeyDTO.getKey()))
+                .setTickets(TicketMapperImpl.ticketDTOlistToTicketList(publicKeyDTO.getTickets()))
                 .setInUsage(publicKeyDTO.isInUsage())
                 .build();
+        return finalResult;
     }
 
     public static PublicKeyDTO publicKeyToPublicKeyDTO(PublicKey publicKey) {
         if (publicKey == null) {
             return null;
         }
-        return new PublicKeyDTO.PublicKeyDTOBuilder()
+
+        PublicKeyDTO finalResult = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setId(publicKey.getId())
                 .setChangedAt(publicKey.getchangedAt())
-                .setKey(publicKey.getKey())
-                .setTickets(publicKey.getTickets())
+                .setKey(KeyUtils.byteArrayToString(publicKey.getKey()))
+                .setTickets(TicketMapperImpl.ticketListToTicketDTOList(publicKey.getTickets()))
                 .setInUsage(publicKey.isInUsage())
                 .build();
+        return finalResult;
+    }
+
+    public static PublicKey publicKeyDTOtoPublicKeyTail(PublicKeyDTO publicKeyDTO) {
+        if (publicKeyDTO == null) {
+            return null;
+        }
+        PublicKey finalResult = new PublicKey.PublicKeyBuilder()
+                .setId(publicKeyDTO.getId())
+                .setchangedAt(publicKeyDTO.getChangedAt())
+                .setKey(KeyUtils.stringToByteArray(publicKeyDTO.getKey()))
+                .setInUsage(publicKeyDTO.isInUsage())
+                .build();
+        return finalResult;
+    }
+
+    public static PublicKeyDTO publicKeyToPublicKeyDTOTail(PublicKey publicKey) {
+        if (publicKey == null) {
+            return null;
+        }
+
+        PublicKeyDTO finalResult = new PublicKeyDTO.PublicKeyDTOBuilder()
+                .setId(publicKey.getId())
+                .setChangedAt(publicKey.getchangedAt())
+                .setKey(KeyUtils.byteArrayToString(publicKey.getKey()))
+                .setInUsage(publicKey.isInUsage())
+                .build();
+        return finalResult;
     }
 
     public static List<PublicKey> publicKeyDTOListToPublicKeyList(List<PublicKeyDTO> publicKeyDTOList) {

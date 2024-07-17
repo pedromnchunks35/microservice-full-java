@@ -17,9 +17,9 @@ public class TicketMapperImpl {
                 .setDay(ticketDTO.getDay())
                 .setHour(ticketDTO.getHour())
                 .setId(ticketDTO.getId())
+                .setPublicKey(PublicKeyMapperImpl.publicKeyDTOtoPublicKeyTail(ticketDTO.getPublicKey()))
+                .setUser(UserMapperImpl.userDTOtoUserTail(ticketDTO.getUser()))
                 .setMonth(ticketDTO.getMonth())
-                .setUser(UserMapperImpl.userDTOtoUser(ticketDTO.getUser()))
-                .setPublicKey(PublicKeyMapperImpl.publicKeyDTOtoPublicKey(ticketDTO.getPublicKey()))
                 .setYear(ticketDTO.getYear())
                 .build();
     }
@@ -32,9 +32,9 @@ public class TicketMapperImpl {
                 .setDay(ticket.getDay())
                 .setHour(ticket.getHour())
                 .setId(ticket.getId())
+                .setPublicKeyDTO(PublicKeyMapperImpl.publicKeyToPublicKeyDTOTail(ticket.getPublicKey()))
+                .setUser(UserMapperImpl.userToUserDTOTail(ticket.getUser()))
                 .setMonth(ticket.getMonth())
-                .setUser(UserMapperImpl.userToUserDTO(ticket.getUser()))
-                .setPublicKeyDTO(PublicKeyMapperImpl.publicKeyToPublicKeyDTO(ticket.getPublicKey()))
                 .setYear(ticket.getYear())
                 .build();
     }
@@ -63,7 +63,7 @@ public class TicketMapperImpl {
 
     public static JSONObject ticketDTOtoJsonObject(TicketDTO ticketDTO) {
         JSONObject jsonForm = new JSONObject();
-        jsonForm.put("id", ticketDTO.getId().toString());
+        jsonForm.put("id", ticketDTO.getId() == null ? null : ticketDTO.getId().toString());
         jsonForm.put("day", ticketDTO.getDay());
         jsonForm.put("hour", ticketDTO.getHour());
         jsonForm.put("month", ticketDTO.getMonth());

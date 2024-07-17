@@ -10,6 +10,7 @@ import rest.entity.PublicKey;
 import rest.exceptions.AlreadyExistsException;
 import rest.exceptions.DoesNotExistException;
 import rest.mapper.PublicKeyMapperImpl;
+import rest.utils.crypto.KeyUtils;
 
 @ApplicationScoped
 public class PublicKeyService implements PanacheRepository<PublicKey> {
@@ -49,7 +50,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
                 result.setchangedAt(updatePublicKey.getChangedAt());
             }
             if (updatePublicKey.getKey() != null) {
-                result.setKey(updatePublicKey.getKey());
+                result.setKey(KeyUtils.stringToByteArray(updatePublicKey.getKey()));
             }
             persist(result);
         }
@@ -110,7 +111,7 @@ public class PublicKeyService implements PanacheRepository<PublicKey> {
      */
     @Transactional
     public PublicKeyDTO getMainPublicKey() {
-        PublicKey queryResult = find("inUsage",true).firstResult();
+        PublicKey queryResult = find("inUsage", true).firstResult();
         return PublicKeyMapperImpl.publicKeyToPublicKeyDTO(queryResult);
     }
 }

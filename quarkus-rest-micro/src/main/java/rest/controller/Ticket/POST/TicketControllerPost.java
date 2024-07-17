@@ -62,6 +62,7 @@ public class TicketControllerPost {
                                         .status(Response.Status.BAD_REQUEST)
                                         .build();
                 }
+                ticketDTO.setUser(checkObj);
                 // ? Get the public key that is beeing used currently to hash the ticket
                 PublicKeyDTO publicKeyToCreateTicket = publicKeyService.getMainPublicKey();
                 if (publicKeyToCreateTicket == null || publicKeyToCreateTicket.getKey() == null) {
@@ -72,6 +73,7 @@ public class TicketControllerPost {
                                         .status(Response.Status.INTERNAL_SERVER_ERROR)
                                         .build();
                 }
+                ticketDTO.setPublicKey(publicKeyToCreateTicket);
                 // ? Get current time
                 Calendar c = Calendar.getInstance();
                 // ? Set the ticket with the necessary data
@@ -116,7 +118,7 @@ public class TicketControllerPost {
                 }
                 // ? Save ticket
                 try {
-                        ticketService.createTicket(ticketDTO);
+                       ticketDTO = ticketService.createTicket(ticketDTO);
                 } catch (AlreadyExistsException e) {
                         return Response.ok(
                                         new GeneralResponse.GeneralResponseBuilder<>()
@@ -128,7 +130,7 @@ public class TicketControllerPost {
                 } catch (DoesNotExistException e) {
                         return Response.ok(
                                         new GeneralResponse.GeneralResponseBuilder<>()
-                                                        .setMessage("There is no publickey to sign this ticket "
+                                                        .setMessage("There is a problem with publickey or with the user to sign this ticket "
                                                                         + e.getMessage())
                                                         .build())
                                         .status(Response.Status.INTERNAL_SERVER_ERROR)

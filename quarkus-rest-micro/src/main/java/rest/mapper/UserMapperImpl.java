@@ -35,6 +35,32 @@ public class UserMapperImpl {
                 .build();
     }
 
+    public static User userDTOtoUserTail(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+        return new User.UserBuilder()
+                .setCountry(userDTO.getCountry())
+                .setLocation(userDTO.getLocation())
+                .setPhoneNumber(userDTO.getPhoneNumber())
+                .setPostalCode(userDTO.getPostalCode())
+                .setUsername(userDTO.getUsername())
+                .build();
+    }
+
+    public static UserDTO userToUserDTOTail(User user) {
+        if (user == null) {
+            return null;
+        }
+        return new UserDTO.UserDTOBuilder()
+                .setCountry(user.getCountry())
+                .setLocation(user.getLocation())
+                .setPhoneNumber(user.getPhoneNumber())
+                .setPostalCode(user.getPostalCode())
+                .setUsername(user.getUsername())
+                .build();
+    }
+
     public static List<User> userDTOListToUserList(List<UserDTO> userDTOList) {
         if (userDTOList == null) {
             return null;
