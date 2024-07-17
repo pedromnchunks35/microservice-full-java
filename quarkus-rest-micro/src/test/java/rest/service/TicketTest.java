@@ -14,7 +14,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.NotSupportedException;
 import jakarta.transaction.SystemException;
-import jakarta.transaction.Transactional;
 import jakarta.transaction.UserTransaction;
 import rest.dto.PublicKeyDTO;
 import rest.dto.TicketDTO;
@@ -56,7 +55,7 @@ public class TicketTest {
                 PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                                 .setChangedAt(new Date())
                                 .setInUsage(false)
-                                .setKey(new byte[] { 111, 111 })
+                                .setKey("Lul")
                                 .build();
                 PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
                 TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
@@ -96,7 +95,7 @@ public class TicketTest {
                 PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                                 .setChangedAt(new Date())
                                 .setInUsage(false)
-                                .setKey(new byte[] { 111, 111 })
+                                .setKey("Lul")
                                 .build();
                 PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
                 TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
@@ -148,7 +147,7 @@ public class TicketTest {
                 PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                                 .setChangedAt(new Date())
                                 .setInUsage(false)
-                                .setKey(new byte[] { 111, 111 })
+                                .setKey("Lul")
                                 .build();
                 PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
                 TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
@@ -166,5 +165,151 @@ public class TicketTest {
                 assertEquals(result.size(), 0);
                 Boolean falseDelete = ticketService.deleteById(UUID.randomUUID());
                 assertEquals(falseDelete, false);
+        }
+
+        @Test
+        public void getLastInsertedTicketByUsernameTest() throws AlreadyExistsException, DoesNotExistException {
+                TicketDTO lastInsertedEmptyTicket = ticketService.getLastInsertedTicketByUsername("deletedUser");
+                assertEquals(lastInsertedEmptyTicket, null);
+                UserDTO newUser1 = new UserDTO.UserDTOBuilder()
+                                .setCountry("PK")
+                                .setLocation("KKKKKK")
+                                .setPhoneNumber("929261723")
+                                .setPostalCode("4720-106")
+                                .setUsername("deletedUser")
+                                .build();
+                UserDTO resultantUser1 = userService.createUser(newUser1);
+                PublicKeyDTO newPublicKeyDTO1 = new PublicKeyDTO.PublicKeyDTOBuilder()
+                                .setChangedAt(new Date())
+                                .setInUsage(false)
+                                .setKey("Lul")
+                                .build();
+                PublicKeyDTO resultantPublicKey1 = publicKeyService.createPublicKey(newPublicKeyDTO1);
+                TicketDTO ticket1 = new TicketDTO.TicketDTOBuilder()
+                                .setDay((short) 1)
+                                .setHour((short) 1)
+                                .setUser(resultantUser1)
+                                .setPublicKeyDTO(resultantPublicKey1)
+                                .setMonth((short) 2)
+                                .setYear((short) 2000)
+                                .build();
+                ticketService.createTicket(ticket1);
+
+                // ? Putting the secound
+                UserDTO newUser = userService.getUserByUsername("deletedUser");
+                PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
+                                .setChangedAt(new Date())
+                                .setInUsage(false)
+                                .setKey("lul")
+                                .build();
+                PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
+                TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
+                                .setDay((short) 1)
+                                .setHour((short) 1)
+                                .setUser(newUser)
+                                .setPublicKeyDTO(resultantPublicKey)
+                                .setMonth((short) 2)
+                                .setYear((short) 2000)
+                                .build();
+                TicketDTO resultantTicket = ticketService.createTicket(ticket);
+                TicketDTO lastInsertedTicket = ticketService.getLastInsertedTicketByUsername("deletedUser");
+                assertEquals(resultantTicket.getId(), lastInsertedTicket.getId());
+        }
+
+        @Test
+        public void getAllTicketsTest() throws AlreadyExistsException, DoesNotExistException {
+                List<TicketDTO> allTicketsEmpty = ticketService.getAllTickets(0, 10);
+                assertEquals(allTicketsEmpty.size(), 0);
+                UserDTO newUser = new UserDTO.UserDTOBuilder()
+                                .setCountry("PK")
+                                .setLocation("KKKKKK")
+                                .setPhoneNumber("929261723")
+                                .setPostalCode("4720-106")
+                                .setUsername("deletedUser")
+                                .build();
+                UserDTO resultantUser = userService.createUser(newUser);
+                for (int i = 0; i < 6; i++) {
+                        PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
+                                        .setChangedAt(new Date())
+                                        .setInUsage(false)
+                                        .setKey("Lul")
+                                        .build();
+                        PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
+                        TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
+                                        .setDay((short) 1)
+                                        .setHour((short) 1)
+                                        .setUser(resultantUser)
+                                        .setPublicKeyDTO(resultantPublicKey)
+                                        .setMonth((short) 2)
+                                        .setYear((short) 2000)
+                                        .build();
+                        ticketService.createTicket(ticket);
+                }
+                List<TicketDTO> allTicketsList = ticketService.getAllTickets(0, 10);
+                assertEquals(allTicketsList.size(), 6);
+        }
+
+        @Test
+        public void getAllTicketsByUsernameTest() throws AlreadyExistsException, DoesNotExistException {
+                List<TicketDTO> allTicketsEmpty = ticketService.getTicketsByUsername("deletedUser", 0, 10);
+                assertEquals(allTicketsEmpty.size(), 0);
+                UserDTO newUser = new UserDTO.UserDTOBuilder()
+                                .setCountry("PK")
+                                .setLocation("KKKKKK")
+                                .setPhoneNumber("929261723")
+                                .setPostalCode("4720-106")
+                                .setUsername("deletedUser")
+                                .build();
+                UserDTO resultantUser = userService.createUser(newUser);
+                for (int i = 0; i < 6; i++) {
+                        PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
+                                        .setChangedAt(new Date())
+                                        .setInUsage(false)
+                                        .setKey("Lul")
+                                        .build();
+                        PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
+                        TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
+                                        .setDay((short) 1)
+                                        .setHour((short) 1)
+                                        .setUser(resultantUser)
+                                        .setPublicKeyDTO(resultantPublicKey)
+                                        .setMonth((short) 2)
+                                        .setYear((short) 2000)
+                                        .build();
+                        ticketService.createTicket(ticket);
+                }
+                List<TicketDTO> allTicketsList = ticketService.getTicketsByUsername("deletedUser", 0, 10);
+                assertEquals(allTicketsList.size(), 6);
+        }
+
+        @Test
+        public void getTicketsByIdTest() throws AlreadyExistsException, DoesNotExistException {
+                TicketDTO emptyTicket = ticketService.getTicketsById(UUID.randomUUID());
+                assertEquals(emptyTicket, null);
+                UserDTO newUser = new UserDTO.UserDTOBuilder()
+                                .setCountry("PK")
+                                .setLocation("KKKKKK")
+                                .setPhoneNumber("929261723")
+                                .setPostalCode("4720-106")
+                                .setUsername("deletedUser")
+                                .build();
+                UserDTO resultantUser = userService.createUser(newUser);
+                PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
+                                .setChangedAt(new Date())
+                                .setInUsage(false)
+                                .setKey("Lul")
+                                .build();
+                PublicKeyDTO resultantPublicKey = publicKeyService.createPublicKey(newPublicKeyDTO);
+                TicketDTO ticket = new TicketDTO.TicketDTOBuilder()
+                                .setDay((short) 1)
+                                .setHour((short) 1)
+                                .setUser(resultantUser)
+                                .setPublicKeyDTO(resultantPublicKey)
+                                .setMonth((short) 2)
+                                .setYear((short) 2000)
+                                .build();
+                TicketDTO resultantTicket = ticketService.createTicket(ticket);
+                TicketDTO ticketGetById = ticketService.getTicketsById(resultantTicket.getId());
+                assertEquals(resultantTicket.getId(), ticketGetById.getId());
         }
 }

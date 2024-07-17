@@ -164,4 +164,20 @@ public class KeyUtils {
         byte[] encryptedBytes = cipher.doFinal(ticketJSONString.getBytes(StandardCharsets.UTF_8));
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
+
+    /**
+     * @param str the string we wish to convert to byte
+     * @return
+     */
+    public static byte[] stringToByteArray(String str) {
+        return str.getBytes(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * @param byteArray, the bytearray that we wish to convert to a UTF_8 String
+     * @return
+     */
+    public static String byteArrayToString(byte[] byteArray) {
+        return new String(byteArray, StandardCharsets.UTF_8);
+    }
 }

@@ -42,7 +42,7 @@ public class PublicKeyTest {
         PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("lUL")
                 .build();
         PublicKeyDTO resultant = publicKeyService.createPublicKey(newPublicKeyDTO);
         assertEquals(newPublicKeyDTO.getChangedAt() != null, true);
@@ -60,7 +60,7 @@ public class PublicKeyTest {
         PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("LUL")
                 .build();
         PublicKeyDTO resultant = publicKeyService.createPublicKey(newPublicKeyDTO);
         PublicKeyDTO getResultById = publicKeyService.getPublicKeyById(resultant.getId());
@@ -77,10 +77,10 @@ public class PublicKeyTest {
         PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("lul")
                 .build();
         PublicKeyDTO resultant = publicKeyService.createPublicKey(newPublicKeyDTO);
-        resultant.setKey(new byte[] { 111, 000, 111, 101, 111 });
+        resultant.setKey("Lul");
         resultant.setChangedAt(new Date());
         PublicKeyDTO updated = publicKeyService.updatePublicKey(resultant);
         assertEquals(updated.getKey(), resultant.getKey());
@@ -100,7 +100,7 @@ public class PublicKeyTest {
         PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("lul")
                 .build();
         PublicKeyDTO resultant = publicKeyService.createPublicKey(newPublicKeyDTO);
         boolean isDeleted = publicKeyService.deleteById(resultant.getId());
@@ -120,14 +120,14 @@ public class PublicKeyTest {
         PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("lul")
                 .build();
         PublicKeyDTO resultant = publicKeyService.createPublicKey(newPublicKeyDTO);
         // ? Create second publickey
         PublicKeyDTO newPublicKeyDTO2 = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("lul")
                 .build();
         PublicKeyDTO resultant2 = publicKeyService.createPublicKey(newPublicKeyDTO2);
         // ? Update it
@@ -157,7 +157,7 @@ public class PublicKeyTest {
         PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                 .setChangedAt(new Date())
                 .setInUsage(false)
-                .setKey(new byte[] { 111, 111 })
+                .setKey("lul")
                 .build();
         PublicKeyDTO resultant = publicKeyService.createPublicKey(newPublicKeyDTO);
         PublicKeyDTO obj = publicKeyService.getMainPublicKey();
@@ -173,7 +173,7 @@ public class PublicKeyTest {
             PublicKeyDTO newPublicKeyDTO = new PublicKeyDTO.PublicKeyDTOBuilder()
                     .setChangedAt(new Date())
                     .setInUsage(false)
-                    .setKey(new byte[] { 111, 111 })
+                    .setKey("lul")
                     .build();
             publicKeyService.createPublicKey(newPublicKeyDTO);
         }

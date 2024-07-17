@@ -19,3 +19,9 @@ quarkus.hibernate-orm.database.generation=update
 quarkus.hibernate-orm.log.sql=true
 ```
 - We have the credentials and also the debug mode opened
+# Keycloak setup
+- Setting up in kubernetes
+```
+https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes/keycloak.yaml
+```
+- I went o that website 

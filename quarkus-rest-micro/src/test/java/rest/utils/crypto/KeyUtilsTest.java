@@ -50,7 +50,7 @@ public class KeyUtilsTest {
                                 "-----END PUBLIC KEY-----";
                 when(publicKeyService.getPublicKeyById(Long.valueOf(1)))
                                 .thenReturn(new PublicKeyDTO.PublicKeyDTOBuilder()
-                                                .setKey(pubkey.getBytes())
+                                                .setKey(pubkey)
                                                 .setChangedAt(new Date())
                                                 .setId(Long.valueOf(1))
                                                 .build());
