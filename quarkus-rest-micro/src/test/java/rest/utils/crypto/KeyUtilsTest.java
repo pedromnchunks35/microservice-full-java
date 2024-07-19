@@ -12,8 +12,9 @@ import rest.dto.PublicKeyDTO;
 import rest.dto.TicketDTO;
 import rest.dto.UserDTO;
 import rest.mapper.TicketMapperImpl;
-import rest.service.PublicKeyService;
-import rest.service.TicketService;
+import rest.repositories.PublicKeyRepository;
+import rest.repositories.TicketRepository;
+
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -30,9 +31,9 @@ import java.util.Date;
 @QuarkusTest
 public class KeyUtilsTest {
         @InjectMock
-        PublicKeyService publicKeyService;
+        PublicKeyRepository publicKeyRepository;
         @InjectMock
-        TicketService ticketService;
+        TicketRepository ticketRepository;
 
         @Test
         public void encryptTicketsTest() throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException,
@@ -48,7 +49,7 @@ public class KeyUtilsTest {
                                 "b5aF715Flzd85cs2nnHrM/R26CHSjhSLY5/bfBB3MgSeBetuZN2XUWx7Oo1KgAFb\n" +
                                 "aQIDAQAB\n" +
                                 "-----END PUBLIC KEY-----";
-                when(publicKeyService.getPublicKeyById(Long.valueOf(1)))
+                when(publicKeyRepository.getPublicKeyById(Long.valueOf(1)))
                                 .thenReturn(new PublicKeyDTO.PublicKeyDTOBuilder()
                                                 .setKey(pubkey)
                                                 .setChangedAt(new Date())
@@ -83,7 +84,7 @@ public class KeyUtilsTest {
                                 "wqtDrDBclPqD2cbPMNuAFWo=\n" +
                                 "-----END PRIVATE KEY-----";
                 UUID randomId = UUID.randomUUID();
-                when(ticketService.getTicketsById(randomId)).thenReturn(
+                when(ticketRepository.getTicketsById(randomId)).thenReturn(
                                 new TicketDTO.TicketDTOBuilder()
                                                 .setId(randomId)
                                                 .setDay((short) 1)
@@ -101,10 +102,10 @@ public class KeyUtilsTest {
                                                 .build());
 
                 // ? GETTING THE TICKET TO SIGN
-                TicketDTO ticketDTO = ticketService.getTicketsById(randomId);
+                TicketDTO ticketDTO = ticketRepository.getTicketsById(randomId);
                 JSONObject jsonFormOfTicket = TicketMapperImpl.ticketDTOtoJsonObject(ticketDTO);
                 // ? Getting the publickey
-                PublicKeyDTO publicKeyDTO = publicKeyService.getPublicKeyById(Long.valueOf(1));
+                PublicKeyDTO publicKeyDTO = publicKeyRepository.getPublicKeyById(Long.valueOf(1));
                 String publicKeyStringForm = new String(publicKeyDTO.getKey());
                 String publicKeyWithoutHeaders = KeyUtils.removeX509Headers(publicKeyStringForm);
                 PublicKey publicKey = KeyUtils.getPublicKeyFromKeyWithNoHeaders(publicKeyWithoutHeaders);

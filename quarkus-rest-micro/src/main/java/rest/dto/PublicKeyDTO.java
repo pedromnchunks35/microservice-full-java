@@ -2,7 +2,6 @@ package rest.dto;
 
 import java.util.Date;
 import java.util.List;
-import rest.entity.Ticket;
 
 public class PublicKeyDTO {
     private Long id;

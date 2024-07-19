@@ -7,7 +7,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 7000
+      port: 8080
       targetPort: 8080
   selector:
     app: keycloak
@@ -32,7 +32,15 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:25.0.1
-          args: ["start-dev"]
+          args:
+            [
+               "start-dev",
+              "--db=postgres",
+              "--db-username=admin",
+              "--db-password=12341234",
+              "--db-url=jdbc:postgresql://172.24.166.62:30001/keycloak",
+              "--log-level=ERROR"
+            ]
           env:
             - name: KEYCLOAK_ADMIN
               value: "admin"
@@ -40,6 +48,8 @@ spec:
               value: "admin"
             - name: KC_PROXY
               value: "edge"
+            - name: KEYCLOAK_LOGLEVEL
+              value: DEBUG
           ports:
             - name: http
               containerPort: 8080

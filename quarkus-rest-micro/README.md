@@ -20,8 +20,30 @@ quarkus.hibernate-orm.log.sql=true
 ```
 - We have the credentials and also the debug mode opened
 # Keycloak setup
-- Setting up in kubernetes
-```
-https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes/keycloak.yaml
-```
-- I went o that website 
+## 1
+- I am creating the db with the kubernetes config of the db
+- Then i will enter the db and create a db for keycloak called "keycloak"
+- The configs for keycloak are also in the kubernetes config where i create a connection with postgresql
+- Im initing a keyloak instance then
+## 2
+- Creating a realm called "micro-rest"
+- Lets then create a client for quarkus
+- Active the client authentication
+- Active the Authorization
+- Enable web origin to "/*"
+- Chaging the resources configs to this new client for quarkus
+## 3
+- Create a role for user and another for admin
+- I will create a admin just because yes
+- Dont forget to set the password for it
+- Assign it the role admin
+## 4 
+- Go to clients 
+- Because you activated authorization
+- Create the resources 
+  - This the urls that roles will have access to
+  - I will put here all the urls that are accepted to access, i will put "/*"
+- Create a policie of whanever type you want
+- I will create a role one adding admin and user
+- Then add a permission, this permission uses policies and resources together to achieve the desirable behavior
+  - We will add those that we created before
