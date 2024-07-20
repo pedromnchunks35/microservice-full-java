@@ -40,7 +40,7 @@ public class TicketControllerPost {
         @Consumes(MediaType.APPLICATION_JSON)
         public Response createTicket(@RequestBody TicketDTO ticketDTO, @Context HttpHeaders headers) {
                 if (!headersOperations.verifyRole(headers, "admin", keycloakOperationsImpl)
-                                || !headersOperations.verifyRole(headers, "user", keycloakOperationsImpl)) {
+                                && !headersOperations.verifyRole(headers, "user", keycloakOperationsImpl)) {
                         return Response
                                         .ok(new GeneralResponse.GeneralResponseBuilder<>()
                                                         .setMessage("You should present a valid token or have the role of admin or user")
