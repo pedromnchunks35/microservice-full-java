@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: ca
+  template:
+    metadata:
+      labels:
+        deployment: ca
+        service: ca
+    spec:
+      containers:
+        - name: ca-container
+          image: hyperledger/fabric-ca
+          volumeMounts:
+            - mountPath: "/etc/hyperledger/fabric-ca-server"
+              name: ca-volume
+      volumes:
+        - name: ca-volume
+          hostPath:
+            path: /mnt/c/Users/psousaesilva/Documents/microservices-project-java/quarkus-grpc-ticket/quarkus-tickets-service/kubernetes-config/ca-storage

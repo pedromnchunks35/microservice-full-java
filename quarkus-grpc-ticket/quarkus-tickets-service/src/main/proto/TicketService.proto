@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "service.ticket";
+option java_outer_classname = "TicketGrpcProto";
+
+package hello;
+
+service TicketService {
+    rpc CheckTicket(Ticket) returns (Msp){}
+    rpc ChangePrivateKey(PrivateKey) returns (Confirmation){}
+    rpc RegisterUser(User) returns (Confirmation){}
+}
+
+message Ticket {
+    string username = 1;
+    string ticket = 2;
+}
+
+message Msp{
+    bytes cacert = 1;
+    bytes keystore = 2;
+    bytes signcert = 3;
+    bytes user = 4;
+    bytes issuerPublicKey=5;
+    bytes issuerRevocationPublicKey=6;
+}
+
+message PrivateKey{
+    string privateKey=1;
+}
+
+message Confirmation{
+    int32 code=1;
+    string message=2;
+}
+
+message User{
+    string username=1;
+    string password=2;
+}
